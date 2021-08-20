@@ -5,6 +5,7 @@ const Whatsapp = require('./services/wp');
 const SESSION_FILE_PATH = './session.json'
 let wp = new Whatsapp();
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 const sendMessagePost = (req, res) => {
@@ -14,9 +15,8 @@ const sendMessagePost = (req, res) => {
     wp.sendMessage(newNumber, message);
     res.send({ status: 'Enviado!' })
 }
+
 app.post('/send', sendMessagePost);
-
-
 
 (fs.existsSync(SESSION_FILE_PATH))?wp.withSession(): wp.withOutSession()
 

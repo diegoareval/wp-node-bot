@@ -84,7 +84,7 @@ class Whatsapp {
                 default: this.sendMessage(from,'no estoy disponible');
                 break;
             }
-            this.saveHistorial(from, body);
+           // this.saveHistorial(from, body);
     
         });
     }
@@ -95,7 +95,7 @@ class Whatsapp {
     }
     
      saveHistorial (from, message)  {
-        const pathChat = `../chats/${from}.xlsx`;
+        const pathChat = `./chats/${from}.xlsx`;
         const workbook = new ExcelJs.Workbook();
         const today = moment().format('DD.MM.YYYY HH:mm');
         if(fs.existsSync(pathChat)){
@@ -118,7 +118,8 @@ class Whatsapp {
            worksheet.addRow([today, message]);
            workbook.xlsx.writeFile(pathChat).then(()=>{
               console.log("created");
-           }).catch(()=> {
+           }).catch((e)=> {
+               console.log(e);
                console.log("something went wrong");
            })
         }
