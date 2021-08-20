@@ -6,10 +6,24 @@ const chalk = require('chalk');
 const ExcelJs = require('exceljs');
 const moment = require('moment');
 const express = require('express');
+const cors = require('cors');
 const SESSION_FILE_PATH = './session.json'
 let client;
 let sessionData;
+const app = express();
 
+
+
+app.use(express.json());
+app.use(cors());
+const sendMessagePost = (req, res) => {
+    const { message, number } = req.body;
+    const newNumber = `${number}@c.us`
+    console.log(message, number);
+    sendMessage(newNumber, message);
+    res.send({ status: 'Enviado!' })
+}
+app.post('/send', sendMessagePost);
 const withSession = () => {
     console.log("here");
     const spinner = ora(`cargando ${chalk.yellow('validando credenciales')}`);
@@ -138,3 +152,7 @@ const sendMessage = (to, message) => {
 
 
 (fs.existsSync(SESSION_FILE_PATH))?withSession(): withOutSession()
+
+app.listen(9000, ()=> {
+    console.log('Api esta arriba');
+})
